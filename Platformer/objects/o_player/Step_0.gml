@@ -1,28 +1,38 @@
 /// @description Player shits
 
 
-
-//Check move right-left
-if o_input.x_input_ != 0 && !place_meeting(x + o_input.x_input_*speed_, y, o_solid){
-	hspeed_ = speed_ * o_input.x_input_;
-//Pixel Perfect movement
-} else if o_input.x_input_ != 0 && place_meeting(x + o_input.x_input_*speed_, y, o_solid){
-	hspeed_ = 0;
-	while !place_meeting(x + sign(o_input.x_input_), y, o_solid) {
-		x += sign(o_input.x_input_);
-	}
-//Reset
+//input for moving player
+if o_input.x_input_ != 0 {
+	//add acceleration value
+	hspeed_ += o_input.x_input_ * acceleration_;
+	hspeed_ = clamp(hspeed_, -max_speed_, max_speed_);
 } else {
-	hspeed_ = 0;	
+	//add friction value
+	hspeed_ = lerp(hspeed_, 0, friction_);
 }
+
 
 //Gravity
 if !place_meeting(x, y+sign(gravity_), o_solid){
-	vspeed_ = gravity_;	
+	vspeed_ += gravity_;
 } else {
-	vspeed_ = 0;
-}	
+	//jumping
+	if o_input.jump_ {
+		gravity_ = -gravity_
+		x_scale_ = image_xscale * 0.7 ;
+		y_scale_ = image_yscale * 1.3;
+	}
+}
 
+//Run move script
+move();
 
-x += hspeed_;
-y += vspeed_;
+//Landing
+if place_meeting(x, y+sign(gravity_), o_solid) && !place_meeting(x, yprevious+sign(gravity_), o_solid) {
+	x_scale_ = image_xscale * 1.4;
+	y_scale_ = image_yscale * 0.7;
+}
+
+//Return sprite normal
+x_scale_ = lerp(x_scale_, image_xscale, 0.1);
+y_scale_ = lerp(y_scale_, image_yscale, 0.1);
