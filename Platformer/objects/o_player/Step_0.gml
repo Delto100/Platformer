@@ -1,5 +1,6 @@
 /// @description Player shits
 
+var _y = 0;
 
 //input for moving player
 if o_input.x_input_ != 0 {
@@ -15,22 +16,30 @@ if o_input.x_input_ != 0 {
 //Gravity
 if !place_meeting(x, y+sign(gravity_), o_solid){
 	vspeed_ += gravity_;
+	
 } else {
 	//jumping
 	if o_input.jump_ {
+		_y = distance_switch();
 		gravity_ = -gravity_
+		global.can_move_ = false;
 		x_scale_ = image_xscale * 0.7 ;
 		y_scale_ = image_yscale * 1.3;
+	
 	}
 }
 
 //Run move script
 move();
+if _y != 0 {
+switch_sprite_origin(_y,s_player);
+}
 
 //Landing
 if place_meeting(x, y+sign(gravity_), o_solid) && !place_meeting(x, yprevious+sign(gravity_), o_solid) {
-	x_scale_ = image_xscale * 1.4;
-	y_scale_ = image_yscale * 0.7;
+	x_scale_ = image_xscale * 20;
+	y_scale_ = image_yscale * 0.1;
+	global.can_move_ = true;
 }
 
 //Return sprite normal

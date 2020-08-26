@@ -8,7 +8,9 @@ function move(){
 		}
 		hspeed_ = 0;
 	}
-	x += hspeed_;
+	if global.can_move_ == true {
+		x += hspeed_;
+	}
 	
 	//move up-down
 	if place_meeting(x, y+vspeed_, o_solid) {

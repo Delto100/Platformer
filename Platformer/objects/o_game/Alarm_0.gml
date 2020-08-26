@@ -1,0 +1,2 @@
+/// @description alarm sprite offset
+
