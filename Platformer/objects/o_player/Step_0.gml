@@ -1,7 +1,5 @@
 /// @description Player shits
 
-var _y = 0;
-
 //input for moving player
 if o_input.x_input_ != 0 {
 	//add acceleration value
@@ -12,33 +10,35 @@ if o_input.x_input_ != 0 {
 	hspeed_ = lerp(hspeed_, 0, friction_);
 }
 
-
 //Gravity
 if !place_meeting(x, y+sign(gravity_), o_solid){
 	vspeed_ += gravity_;
-	
 } else {
 	//jumping
 	if o_input.jump_ {
-		_y = distance_switch();
-		gravity_ = -gravity_
 		global.can_move_ = false;
+		if global.upsidedown_ == false {
+			global.upsidedown_ = true;	
+		} else if global.upsidedown_ == true {
+			global.upsidedown_ = false;	
+		}
+		
+		distance_upside_down_ = distance_switch();
+		last_y_ground_ = y;
+		gravity_ = -gravity_;
 		x_scale_ = image_xscale * 0.7 ;
 		y_scale_ = image_yscale * 1.3;
-	
 	}
 }
 
-//Run move script
+//Run move script and revert
 move();
-if _y != 0 {
-switch_sprite_origin(_y,s_player);
-}
+switch_sprite_origin(distance_upside_down_, last_y_ground_,sprite_);
 
 //Landing
 if place_meeting(x, y+sign(gravity_), o_solid) && !place_meeting(x, yprevious+sign(gravity_), o_solid) {
-	x_scale_ = image_xscale * 20;
-	y_scale_ = image_yscale * 0.1;
+	x_scale_ = image_xscale * 1.3;
+	y_scale_ = image_yscale * 0.7;
 	global.can_move_ = true;
 }
 

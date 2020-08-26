@@ -9,8 +9,13 @@ gravity_ = 2;
 friction_ = 0.3;
 acceleration_ = 0.8;
 
+distance_upside_down_ = noone;
+last_y_ground_ = noone;
+
 jump_speed_ = 16;
 jump_frame_ = 5;
 
 x_scale_ = image_xscale;
 y_scale_ = image_yscale;
+
+sprite_ = s_player;
