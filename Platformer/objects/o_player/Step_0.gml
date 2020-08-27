@@ -22,11 +22,10 @@ if !place_meeting(x, y+sign(gravity_), o_solid){
 		} else if global.upsidedown_ == true {
 			global.upsidedown_ = false;	
 		}
-		
 		distance_upside_down_ = distance_switch();
 		last_y_ground_ = y;
 		gravity_ = -gravity_;
-		x_scale_ = image_xscale * 0.7 ;
+		x_scale_ = image_xscale * 0.7;
 		y_scale_ = image_yscale * 1.3;
 	}
 }
